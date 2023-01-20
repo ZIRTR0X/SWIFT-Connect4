@@ -93,16 +93,17 @@ public struct Board : CustomStringConvertible
             return false
         }
 
-        grid[columns][rows] = nil
+        grid[rows][columns] = nil
+        movesPartsAfterDelete(columns: columns, rows: rows)
         return true
     }
 
     private mutating func movesPartsAfterDelete(columns: Int, rows: Int) {
         for i in (0...rows).reversed() {
-            if i - 1 > 0 && grid[columns][i - 1] != nil {
-                grid[columns][i] = grid[columns][i - 1]
+            if i - 1 > 0 && grid[i - 1][columns] != nil {
+                grid[i][columns] = grid[i - 1][columns]
             } else {
-                grid[columns][i] = nil
+                grid[i][columns] = nil
             }
         }
     }
@@ -119,18 +120,18 @@ public struct Board : CustomStringConvertible
             return false
         }
 
-        grid[columns][rows] = nil
+        grid[rows][columns] = nil
         return true
     }
     
     private func checkInsertPiece(id: Int, gravity: Bool, columns: Int, rows: Int?) throws {
 
         if gravity {
-            if grid[columns].allSatisfy({ $0 != nil }) {
+            if grid[0][columns] != nil {
                 throw OutOfRangeError("The column is full.")
             }
         } else {
-            if grid[columns][rows!] != nil {
+            if grid[rows!][columns] != nil {
                 throw OutOfRangeError("The place is already taken.")
             }
         }
@@ -140,7 +141,7 @@ public struct Board : CustomStringConvertible
         }
         
         if rows ?? 0 < 0 || rows ?? 0 > nbRows {
-            throw OutOfRangeError("The line is out of range [0,\(nbRows)].")
+            throw OutOfRangeError("The row is out of range [0,\(nbRows)].")
         }
     
         if id != 1 && id != 2 {
@@ -158,10 +159,10 @@ public struct Board : CustomStringConvertible
         }
 
         if rows < 0 || rows > nbRows {
-            throw OutOfRangeError("The line is out of range [0,\(nbRows)].")
+            throw OutOfRangeError("The row is out of range [0,\(nbRows)].")
         }
 
-        if grid[columns][rows] == nil {
+        if grid[rows][columns] == nil {
             throw OutOfRangeError("The place is empty.")
         }
     }
