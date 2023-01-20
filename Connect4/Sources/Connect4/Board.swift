@@ -1,13 +1,13 @@
 import Foundation
 
-public struct Board
+public struct Board : CustomStringConvertible
 {
     private let nbRows: Int
     private let nbColumns: Int
     private var grid: [[Int?]]
 
     private static let descriptionMappping: [Int?: String] = [
-        0: " ",
+        nil: "-",
         1: "X",
         2: "O"
     ]
@@ -17,7 +17,7 @@ public struct Board
 
         for row in 0..<nbRows {
             for column in 0..<nbColumns {
-                string.append("\(grid[row][column] ?? 0) ")
+                string.append("\(String(describing: Board.descriptionMappping[grid[row][column]] ??  "-" )) ")
             }
             string.append("\n")
         }
@@ -35,19 +35,14 @@ public struct Board
         for row in grid {
             guard row.count == grid[0].count else {return nil}
         }
-        self.grid = grid.map { row in
-            row.map { value in
-                Board.descriptionMappping[value ?? 0] as? Int
-            }
-        }
+        self.grid = grid
         nbColumns = grid[0].count
         nbRows = grid.count
     }
     
     // avec gravité
     public mutating func insertPiece(id: Int, columns: Int) -> Bool {
-
-        var rows = nbRows
+        var rows = 0
         
         do {
             try checkInsertPiece(id: id, gravity: true,  columns: columns, rows: rows)
@@ -58,13 +53,16 @@ public struct Board
             print("An unknown error occurred")
             return false
         }
-        
-        if rows + 1 > nbRows && grid[columns][rows + 1] == nil {
-            //descendre pièce à une ligne inférieur
-            return self.insertPiece(id: id, columns: columns, rows: rows + 1)
+        for i in 0..<nbRows {
+            if grid[i][columns] == nil {
+                rows = i
+            }
         }
-        
-        grid[columns][rows] = Board.descriptionMappping[id]
+        //if rows + 1 > nbRows - 1 && grid[columns][rows + 1] == nil {
+            //descendre pièce à une ligne inférieur
+        //}
+
+        insertPiece(id: id, columns: columns, rows: rows)
         return true
     }
     
@@ -80,7 +78,7 @@ public struct Board
             return false
         }
 
-        grid[columns][rows] = id
+        grid[rows][columns] = id
         return true
     }
 
@@ -170,15 +168,6 @@ public struct Board
 
     public func isFull() -> Bool {
         grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) })
-    }
-
-    public func showGrid() {
-        for row in 0..<nbRows {
-            for column in 0..<nbColumns {
-                print("\(grid[row][column] ?? 0) ", terminator: "")
-            }
-            print("")
-        }
     }
     
 }

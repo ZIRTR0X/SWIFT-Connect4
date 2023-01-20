@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EC3F13282976D9E1009AFBC3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3F13272976D9E1009AFBC3 /* main.swift */; };
+		ECA76B5F2979323B007B31DB /* Connect4 in Frameworks */ = {isa = PBXBuildFile; productRef = ECA76B5E2979323B007B31DB /* Connect4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECA76B5F2979323B007B31DB /* Connect4 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +45,7 @@
 			children = (
 				EC3F13262976D9E1009AFBC3 /* Connect4Cmd */,
 				EC3F13252976D9E1009AFBC3 /* Products */,
+				ECA76B5D2979323B007B31DB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +65,13 @@
 			path = Connect4Cmd;
 			sourceTree = "<group>";
 		};
+		ECA76B5D2979323B007B31DB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -78,6 +88,9 @@
 			dependencies = (
 			);
 			name = Connect4Cmd;
+			packageProductDependencies = (
+				ECA76B5E2979323B007B31DB /* Connect4 */,
+			);
 			productName = Connect4Cmd;
 			productReference = EC3F13242976D9E1009AFBC3 /* Connect4Cmd */;
 			productType = "com.apple.product-type.tool";
@@ -280,6 +293,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ECA76B5E2979323B007B31DB /* Connect4 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Connect4;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EC3F131C2976D9E1009AFBC3 /* Project object */;
 }
