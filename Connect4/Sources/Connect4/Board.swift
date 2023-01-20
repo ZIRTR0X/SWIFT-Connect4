@@ -1,17 +1,25 @@
 import Foundation
 
+/// The board of the game
 public struct Board : CustomStringConvertible
 {
     private let nbRows: Int
     private let nbColumns: Int
     private var grid: [[Int?]]
 
+    /// Convert numerical values from the grid to characters
+    /// - Returns: The grid as a string
+    /// - Note:
+    ///  - 1: X
+    ///  - 2: O
+    ///  - nil: -
     private static let descriptionMappping: [Int?: String] = [
         nil: "-",
         1: "X",
         2: "O"
     ]
 
+    /// Displays the status of the grid as a string
     public var description: String {
         var string = String()
 
@@ -24,12 +32,19 @@ public struct Board : CustomStringConvertible
         return string
     }
 
+    /// Init a board with a number of rows and columns
+    /// - Parameters:
+    ///   - nbRows: The number of rows
+    ///   - nbColumns: The number of columns
     public init(nbRows: Int, nbColumns: Int) {
         grid = Array(repeating: Array(repeating: nil, count: nbColumns), count: nbRows)
         self.nbColumns = nbColumns
         self.nbRows = nbRows
     }
 
+    /// Init a board with a grid
+    /// - Parameters :
+    ///  - grid: The grid
     public init?(grid: [[Int?]]) {
         guard grid.count > 0 && grid[0].count > 0 else {return nil}
         for row in grid {
@@ -39,8 +54,12 @@ public struct Board : CustomStringConvertible
         nbColumns = grid[0].count
         nbRows = grid.count
     }
-    
-    // avec gravité
+
+    /// Insert a piece in the board (with gravity)
+    /// - Parameters:
+    ///   - id: The id of the piece (1:X or 2:O)
+    ///   - columns: The column where the piece will be inserted
+    /// - Returns: True if the piece is inserted, false otherwise
     public mutating func insertPiece(id: Int, columns: Int) -> Bool {
         var rows = 0
         
@@ -58,15 +77,19 @@ public struct Board : CustomStringConvertible
                 rows = i
             }
         }
-        //if rows + 1 > nbRows - 1 && grid[columns][rows + 1] == nil {
-            //descendre pièce à une ligne inférieur
-        //}
 
-        insertPiece(id: id, columns: columns, rows: rows)
+        if(!insertPiece(id: id, columns: columns, rows: rows)) {
+            return false
+        }
         return true
     }
     
-    // sans gravité
+    /// Insert a piece in the board (without gravity)
+    /// - Parameters:
+    ///   - id: The id of the piece (1:X or 2:O)
+    ///   - columns: The column where the piece will be inserted
+    ///   - rows: THe row where the piece will be inserted
+    /// - Returns: True if the piece is inserted, false otherwise
     private mutating func insertPiece(id: Int, columns: Int, rows: Int) -> Bool {
         do {
             try checkInsertPiece(id: id, gravity: false, columns: columns, rows: rows)
@@ -82,6 +105,11 @@ public struct Board : CustomStringConvertible
         return true
     }
 
+    /// Check if the piece can be inserted in the board (with gravity)
+    /// - Parameters:
+    ///   - columns: The column where the piece will be inserted
+    ///   - rows: The row where the piece will be inserted
+    /// - Returns: True if the piece can be inserted, false otherwise
     public mutating func removePiece(columns: Int, rows: Int) -> Bool {
         do {
             try checkRemovePiece(columns: columns, rows: rows)
@@ -98,6 +126,10 @@ public struct Board : CustomStringConvertible
         return true
     }
 
+    /// Check if the piece can be inserted in the board (without gravity)
+    /// - Parameters:
+    ///   - columns: The column where the piece will be inserted
+    ///   - rows: The row where the piece will be inserted
     private mutating func movesPartsAfterDelete(columns: Int, rows: Int) {
         for i in (0...rows).reversed() {
             if i - 1 > 0 && grid[i - 1][columns] != nil {
@@ -108,7 +140,11 @@ public struct Board : CustomStringConvertible
         }
     }
 
-    //whithout gravity
+    /// Check if the piece can be inserted in the board (without gravity)
+    /// - Parameters:
+    ///   - columns: The column where the piece will be inserted
+    ///   - rows: The row where the piece will be inserted
+    /// - Returns: True if the piece can be inserted, false otherwise
     private mutating func removePieceWithoutGravity(columns: Int, rows: Int) -> Bool {
         do {
             try checkRemovePiece(columns: columns, rows: rows)
@@ -123,9 +159,15 @@ public struct Board : CustomStringConvertible
         grid[rows][columns] = nil
         return true
     }
-    
-    private func checkInsertPiece(id: Int, gravity: Bool, columns: Int, rows: Int?) throws {
 
+    /// Check if the piece can be inserted in the board
+    /// - Parameters:
+    ///   - id: The id of the piece (1:X or 2:O)
+    ///   - gravity: True if the piece is inserted with gravity, false otherwise
+    ///   - columns: The column where the piece will be inserted
+    ///   - rows: The row where the piece will be inserted
+    /// - Throws: OutOfRangeError if the piece can't be inserted
+    private func checkInsertPiece(id: Int, gravity: Bool, columns: Int, rows: Int?) throws {
         if gravity {
             if grid[0][columns] != nil {
                 throw OutOfRangeError("The column is full.")
@@ -135,38 +177,39 @@ public struct Board : CustomStringConvertible
                 throw OutOfRangeError("The place is already taken.")
             }
         }
-
         if columns < 0 || columns > nbColumns {
             throw OutOfRangeError("The column is out of range [0,\(nbRows)].")
         }
-        
         if rows ?? 0 < 0 || rows ?? 0 > nbRows {
             throw OutOfRangeError("The row is out of range [0,\(nbRows)].")
         }
-    
         if id != 1 && id != 2 {
             throw OutOfRangeError("The id is out of range [1,2].")
         }
-
         if grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) }) {
             throw OutOfRangeError("The grid is full.")
         }
     }
 
+    /// Check if the piece can be removed in the board
+    /// - Parameters:
+    ///   - columns: The column where the piece will be removed
+    ///   - rows: The row where the piece will be removed
+    /// - Throws: OutOfRangeError if the piece can't be removed
     private func checkRemovePiece(columns: Int, rows: Int) throws {
         if columns < 0 || columns > nbColumns {
             throw OutOfRangeError("The column is out of range [0,\(nbRows)].")
         }
-
         if rows < 0 || rows > nbRows {
             throw OutOfRangeError("The row is out of range [0,\(nbRows)].")
         }
-
         if grid[rows][columns] == nil {
             throw OutOfRangeError("The place is empty.")
         }
     }
 
+    /// Check if the grid is full
+    /// - Returns: True if the grid is full, false otherwise
     public func isFull() -> Bool {
         grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) })
     }
