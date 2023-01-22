@@ -110,5 +110,43 @@ final class Board_UT: XCTestCase {
         expect(insertPieceWithId: 0, andColumn: 1, shouldBeNotNil: false)
         expect(insertPieceWithId: 3, andColumn: 1, shouldBeNotNil: false)
     }
+
+    func testDeletePiece() throws {
+
+        func expect(removePieceWithRow row: Int, andColumn column: Int, shouldBeNotNil notNil: Bool) {
+            let grid = [
+                [nil, nil, nil, nil, 1],
+                [nil, nil, nil, 2, 2],
+                [nil, nil, 1, 2, 2],
+                [nil, 1, 2, 1, 2]]
+            var board = Board(grid: grid)
+            let result = board?.removePiece(row: row, column: column)
+            if !notNil {
+                XCTAssertFalse(result!)
+                return
+            }
+
+            XCTAssertNotNil(result)
+
+            for i in 0...row {
+                if i == 0 {
+                    XCTAssertEqual(nil, board?.grid[i][column])
+                } else {
+                    XCTAssertEqual(grid[i-1][column] ?? nil, board?.grid[i][column])
+                }
+            }
+        }
+
+        expect(removePieceWithRow: 0, andColumn: 0, shouldBeNotNil: false)
+        expect(removePieceWithRow: 3, andColumn: 1, shouldBeNotNil: true)
+        expect(removePieceWithRow: 3, andColumn: 2, shouldBeNotNil: true)
+        expect(removePieceWithRow: 2, andColumn: 3, shouldBeNotNil: true)
+        expect(removePieceWithRow: 3, andColumn: 4, shouldBeNotNil: true)
+        expect(removePieceWithRow: 4, andColumn: 4, shouldBeNotNil: false)
+        expect(removePieceWithRow: -1, andColumn: 4, shouldBeNotNil: false)
+        expect(removePieceWithRow: 3, andColumn: -1, shouldBeNotNil: false)
+        expect(removePieceWithRow: 3, andColumn: 5, shouldBeNotNil: false)
+
+    }
     
 }

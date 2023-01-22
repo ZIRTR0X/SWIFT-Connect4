@@ -116,12 +116,12 @@ public struct Board : CustomStringConvertible
 
     /// Check if the piece can be inserted in the board (with gravity)
     /// - Parameters:
-    ///   - columns: The column where the piece will be inserted
-    ///   - rows: The row where the piece will be inserted
+    ///   - column: The column where the piece will be inserted
+    ///   - row: The row where the piece will be inserted
     /// - Returns: True if the piece can be inserted, false otherwise
-    public mutating func removePiece(columns: Int, rows: Int) -> Bool {
+    public mutating func removePiece(row: Int, column: Int) -> Bool {
         do {
-            try checkRemovePiece(columns: columns, rows: rows)
+            try checkRemovePiece(row: row, column: column)
         } catch let error as OutOfRangeError where error.message != "Error : " {
             print(error.message)
             return false
@@ -130,33 +130,33 @@ public struct Board : CustomStringConvertible
             return false
         }
 
-        grid[rows][columns] = nil
-        movesPartsAfterDelete(columns: columns, rows: rows)
+        grid[row][column] = nil
+        movesPartsAfterDelete(row: row, column: column)
         return true
     }
 
     /// Check if the piece can be inserted in the board (without gravity)
     /// - Parameters:
-    ///   - columns: The column where the piece will be inserted
-    ///   - rows: The row where the piece will be inserted
-    private mutating func movesPartsAfterDelete(columns: Int, rows: Int) {
-        for i in (0...rows).reversed() {
-            if i - 1 > 0 && grid[i - 1][columns] != nil {
-                grid[i][columns] = grid[i - 1][columns]
+    ///   - column: The column where the piece will be inserted
+    ///   - row: The row where the piece will be inserted
+    private mutating func movesPartsAfterDelete(row: Int, column: Int) {
+        for i in (0...row).reversed() {
+            if i - 1 >= 0 && grid[i - 1][column] != nil {
+                grid[i][column] = grid[i - 1][column]
             } else {
-                grid[i][columns] = nil
+                grid[i][column] = nil
             }
         }
     }
 
     /// Check if the piece can be inserted in the board (without gravity)
     /// - Parameters:
-    ///   - columns: The column where the piece will be inserted
-    ///   - rows: The row where the piece will be inserted
+    ///   - column: The column where the piece will be inserted
+    ///   - row: The row where the piece will be inserted
     /// - Returns: True if the piece can be inserted, false otherwise
-    private mutating func removePieceWithoutGravity(columns: Int, rows: Int) -> Bool {
+    private mutating func removePieceWithoutGravity(column: Int, row: Int) -> Bool {
         do {
-            try checkRemovePiece(columns: columns, rows: rows)
+            try checkRemovePiece(row: row, column: column)
         } catch let error as OutOfRangeError where error.message != "Error : " {
             print(error.message)
             return false
@@ -165,7 +165,7 @@ public struct Board : CustomStringConvertible
             return false
         }
 
-        grid[rows][columns] = nil
+        grid[row][column] = nil
         return true
     }
 
@@ -202,17 +202,17 @@ public struct Board : CustomStringConvertible
 
     /// Check if the piece can be removed in the board
     /// - Parameters:
-    ///   - columns: The column where the piece will be removed
-    ///   - rows: The row where the piece will be removed
+    ///   - column: The column where the piece will be removed
+    ///   - row: The row where the piece will be removed
     /// - Throws: OutOfRangeError if the piece can't be removed
-    private func checkRemovePiece(columns: Int, rows: Int) throws {
-        if columns < 0 || columns > nbColumns {
+    private func checkRemovePiece(row: Int, column: Int) throws {
+        if column < 0 || column > nbColumns - 1{
             throw OutOfRangeError("The column is out of range [0,\(nbRows)].")
         }
-        if rows < 0 || rows > nbRows {
+        if row < 0 || row > nbRows - 1 {
             throw OutOfRangeError("The row is out of range [0,\(nbRows)].")
         }
-        if grid[rows][columns] == nil {
+        if grid[row][column] == nil {
             throw OutOfRangeError("The place is empty.")
         }
     }
