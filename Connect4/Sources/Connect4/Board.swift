@@ -3,9 +3,9 @@ import Foundation
 /// The board of the game
 public struct Board : CustomStringConvertible
 {
-    private let nbRows: Int
-    private let nbColumns: Int
-    private var grid: [[Int?]]
+    public let nbRows: Int
+    public let nbColumns: Int
+    public var grid: [[Int?]]
 
     /// Convert numerical values from the grid to characters
     /// - Returns: The grid as a string
@@ -36,7 +36,11 @@ public struct Board : CustomStringConvertible
     /// - Parameters:
     ///   - nbRows: The number of rows
     ///   - nbColumns: The number of columns
-    public init(nbRows: Int, nbColumns: Int) {
+    public init?(nbRows: Int, nbColumns: Int) {
+        guard nbRows > 0 && nbColumns > 0 else {
+            print("Error : The number of rows and columns must be greater than 0")
+            return nil
+        }
         grid = Array(repeating: Array(repeating: nil, count: nbColumns), count: nbRows)
         self.nbColumns = nbColumns
         self.nbRows = nbRows
