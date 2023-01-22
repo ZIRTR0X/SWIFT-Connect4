@@ -54,6 +54,11 @@ public struct Board : CustomStringConvertible
         for row in grid {
             guard row.count == grid[0].count else {return nil}
         }
+        for row in grid {
+            for column in row {
+                guard column == nil || column == 1 || column == 2 else {return nil}
+            }
+        }
         self.grid = grid
         nbColumns = grid[0].count
         nbRows = grid.count
@@ -172,15 +177,6 @@ public struct Board : CustomStringConvertible
     ///   - rows: The row where the piece will be inserted
     /// - Throws: OutOfRangeError if the piece can't be inserted
     private func checkInsertPiece(id: Int, gravity: Bool, columns: Int, rows: Int?) throws {
-        if gravity {
-            if grid[0][columns] != nil {
-                throw OutOfRangeError("The column is full.")
-            }
-        } else {
-            if grid[rows!][columns] != nil {
-                throw OutOfRangeError("The place is already taken.")
-            }
-        }
         if columns < 0 || columns > nbColumns {
             throw OutOfRangeError("The column is out of range [0,\(nbRows)].")
         }
@@ -192,6 +188,15 @@ public struct Board : CustomStringConvertible
         }
         if grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) }) {
             throw OutOfRangeError("The grid is full.")
+        }
+        if gravity {
+            if grid[0][columns] != nil {
+                throw OutOfRangeError("The column is full.")
+            }
+        } else {
+            if grid[rows!][columns] != nil {
+                throw OutOfRangeError("The place is already taken.")
+            }
         }
     }
 
