@@ -69,6 +69,12 @@ final class Board_UT: XCTestCase {
         expect(iniBoardWithGrid: grid3, shouldBeNotNil: false)
         let grid4: [[Int?]]  = [[1, 1, nil], [nil, 1, 2], [2, 2, 2]]
         expect(iniBoardWithGrid: grid4, shouldBeNotNil: true)
+        let grid5: [[Int?]]  = [[1, 1, nil], [nil, 1, 2], [2, 2]]
+        expect(iniBoardWithGrid: grid5, shouldBeNotNil: false)
+        let grid6: [[Int?]]  = [[1, 1,], [nil, 1], [2, 2]]
+        expect(iniBoardWithGrid: grid6, shouldBeNotNil: true)
+        let grid7: [[Int?]]  = [[1, 1,], [nil, 1], [2, 6]]
+        expect(iniBoardWithGrid: grid7, shouldBeNotNil: false)
     }
 
     func testInsertPiece() throws {
@@ -86,6 +92,7 @@ final class Board_UT: XCTestCase {
                 return
             }
 
+            XCTAssertTrue(result!)
             XCTAssertNotNil(result)
             switch column {
                 case 0:
@@ -126,6 +133,7 @@ final class Board_UT: XCTestCase {
                 return
             }
 
+            XCTAssertTrue(result!)
             XCTAssertNotNil(result)
 
             for i in 0...row {
@@ -148,5 +156,32 @@ final class Board_UT: XCTestCase {
         expect(removePieceWithRow: 3, andColumn: 5, shouldBeNotNil: false)
 
     }
+    
+    /*func testIsFull() {
+        
+        func expect(isFullWithGrid grid: [[Int?]], andResult isWork: Bool, shouldBeNotNil notNil: Bool){
+            var board = Board(grid: grid)
+            var result = board?.isFull()
+            if !notNil {
+                XCTAssertFalse(result!)
+                return
+            }
+            XCTAssert(result, isWork)
+            XCTAssertNotNil(result)
+            
+        }
+        
+        let grid1 = [[nil, 1, 1], [1, 1, 1], [1, 1, 1]]
+        expect(isFullWithGrid: grid1, andResult: false, shouldBeNotNil: true)
+        
+        let grid2 = [[1, 1, 1], [1, 1, 1], [1, 1, nil]]
+        expect(isFullWithGrid: grid2, andResult: false, shouldBeNotNil: true)
+        
+        let grid3 = [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]]
+        expect(isFullWithGrid: grid3, andResult: false, shouldBeNotNil: true)
+        
+        let grid4 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
+        expect(isFullWithGrid: grid4, andResult: true, shouldBeNotNil: true)
+    }*/
     
 }

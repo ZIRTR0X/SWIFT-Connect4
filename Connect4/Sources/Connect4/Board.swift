@@ -50,9 +50,10 @@ public struct Board : CustomStringConvertible
     /// - Parameters :
     ///  - grid: The grid
     public init?(grid: [[Int?]]) {
-        guard grid.count > 0 && grid[0].count > 0 else {return nil}
-        for row in grid {
-            guard row.count == grid[0].count else {return nil}
+        guard grid.count > 0 else {return nil}
+        for row in 0..<grid.count {
+            guard grid[row].count > 0 else {return nil}
+            guard grid[row].count == grid[0].count else {return nil}
         }
         for row in grid {
             for column in row {
@@ -190,7 +191,7 @@ public struct Board : CustomStringConvertible
             throw OutOfRangeError("The grid is full.")
         }
         if gravity {
-            if grid[0][columns] != nil {
+            if isFull() {
                 throw OutOfRangeError("The column is full.")
             }
         } else {
@@ -220,7 +221,10 @@ public struct Board : CustomStringConvertible
     /// Check if the grid is full
     /// - Returns: True if the grid is full, false otherwise
     public func isFull() -> Bool {
-        grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) })
+        //if grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) }) {
+            
+        //}
+        return true
     }
     
 }
