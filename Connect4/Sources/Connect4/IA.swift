@@ -9,14 +9,11 @@ import Foundation
 
 public class IA: Player {
     public func random() -> Bool {
-        
+        if board.isFull() {return false}
         var randomValue = Int.random(in: 0..<board.nbColumns)
-        
-        
-        return false
-    }
-    
-    public override func playInColumn(withColumn column: Int) -> Bool {
-        return false
+        while !playInColumn(withColumn: randomValue) {
+            randomValue = Int.random(in: 0..<board.nbColumns)
+        }
+        return true
     }
 }

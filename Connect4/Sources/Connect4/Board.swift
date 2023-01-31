@@ -1,7 +1,7 @@
 import Foundation
 
 /// The board of the game
-public struct Board : CustomStringConvertible
+public class Board : CustomStringConvertible
 {
     public let nbRows: Int
     public let nbColumns: Int
@@ -70,7 +70,7 @@ public struct Board : CustomStringConvertible
     ///   - id: The id of the piece (1:X or 2:O)
     ///   - columns: The column where the piece will be inserted
     /// - Returns: True if the piece is inserted, false otherwise
-    public mutating func insertPiece(id: Int, columns: Int) -> Bool {
+    public func insertPiece(id: Int, columns: Int) -> Bool {
         var rows = 0
         
         do {
@@ -100,7 +100,7 @@ public struct Board : CustomStringConvertible
     ///   - columns: The column where the piece will be inserted
     ///   - rows: THe row where the piece will be inserted
     /// - Returns: True if the piece is inserted, false otherwise
-    private mutating func insertPiece(id: Int, columns: Int, rows: Int) -> Bool {
+    private func insertPiece(id: Int, columns: Int, rows: Int) -> Bool {
         do {
             try checkInsertPiece(id: id, gravity: false, columns: columns, rows: rows)
         } catch let error as OutOfRangeError where error.message != "Error : " {
@@ -120,7 +120,7 @@ public struct Board : CustomStringConvertible
     ///   - column: The column where the piece will be inserted
     ///   - row: The row where the piece will be inserted
     /// - Returns: True if the piece can be inserted, false otherwise
-    public mutating func removePiece(row: Int, column: Int) -> Bool {
+    public func removePiece(row: Int, column: Int) -> Bool {
         do {
             try checkRemovePiece(row: row, column: column)
         } catch let error as OutOfRangeError where error.message != "Error : " {
@@ -140,7 +140,7 @@ public struct Board : CustomStringConvertible
     /// - Parameters:
     ///   - column: The column where the piece will be inserted
     ///   - row: The row where the piece will be inserted
-    private mutating func movesPartsAfterDelete(row: Int, column: Int) {
+    private func movesPartsAfterDelete(row: Int, column: Int) {
         for i in (0...row).reversed() {
             if i - 1 >= 0 && grid[i - 1][column] != nil {
                 grid[i][column] = grid[i - 1][column]
@@ -155,7 +155,7 @@ public struct Board : CustomStringConvertible
     ///   - column: The column where the piece will be inserted
     ///   - row: The row where the piece will be inserted
     /// - Returns: True if the piece can be inserted, false otherwise
-    private mutating func removePieceWithoutGravity(column: Int, row: Int) -> Bool {
+    private func removePieceWithoutGravity(column: Int, row: Int) -> Bool {
         do {
             try checkRemovePiece(row: row, column: column)
         } catch let error as OutOfRangeError where error.message != "Error : " {
@@ -178,8 +178,8 @@ public struct Board : CustomStringConvertible
     ///   - rows: The row where the piece will be inserted
     /// - Throws: OutOfRangeError if the piece can't be inserted
     private func checkInsertPiece(id: Int, gravity: Bool, columns: Int, rows: Int?) throws {
-        if columns < 0 || columns > nbColumns {
-            throw OutOfRangeError("The column is out of range [0,\(nbRows)].")
+        if columns < 0 || columns >= nbColumns {
+            throw OutOfRangeError("The column is out of range [0,\(nbColumns)].")
         }
         if rows ?? 0 < 0 || rows ?? 0 > nbRows {
             throw OutOfRangeError("The row is out of range [0,\(nbRows)].")
@@ -187,13 +187,13 @@ public struct Board : CustomStringConvertible
         if id != 1 && id != 2 {
             throw OutOfRangeError("The id is out of range [1,2].")
         }
-        if grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) }) {
+        if isFull() {
             throw OutOfRangeError("The grid is full.")
         }
         if gravity {
-            if isFull() {
-                throw OutOfRangeError("The column is full.")
-            }
+//            if grid[0][columns] != nil {
+//                throw OutOfRangeError("The column is full.")
+//            }
         } else {
             if grid[rows!][columns] != nil {
                 throw OutOfRangeError("The place is already taken.")
@@ -221,10 +221,94 @@ public struct Board : CustomStringConvertible
     /// Check if the grid is full
     /// - Returns: True if the grid is full, false otherwise
     public func isFull() -> Bool {
-        //if grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) }) {
-            
-        //}
-        return true
+        guard grid.allSatisfy({ $0.allSatisfy({ $0 != nil }) }) else {return false}
+       return true
     }
-    
+
+    public func isEnd() -> Bool {
+        if isFull(){
+            return true
+        }
+        if checkWin(grid: grid, symbol: 1, z: 4) || checkWin(grid: grid, symbol: 2, z: 4) {
+            return true
+        }
+        return false
+    }
+
+    public func isWinner(withSymbole symbol: Int) -> Bool {
+        if checkWin(grid: grid, symbol: symbol, z: 4) {
+            return true
+        }
+        return false
+    }
+
+    public func checkWin(grid: [[Int?]], symbol: Int, z: Int) -> Bool {
+        // Vérifie les lignes
+        for row in grid {
+            var count = 0
+            for item in row {
+                if item == symbol {
+                    count += 1
+                    if count == z {
+                        return true
+                    }
+                } else {
+                    count = 0
+                }
+            }
+        }
+
+        // Vérifie les colonnes
+        for col in 0..<grid[0].count {
+            var count = 0
+            var column = [Int?]()
+            for row in grid {
+                column.append(row[col])
+            }
+            for item in column {
+                if item == symbol {
+                    count += 1
+                    if count == z {
+                        return true
+                    }
+                } else {
+                    count = 0
+                }
+            }
+        }
+
+        // Vérifie les diagonales
+        var diagonal1 = [Int?]()
+        var diagonal2 = [Int?]()
+        for i in 0..<grid.count {
+            diagonal1.append(grid[i][i])
+            diagonal2.append(grid[i][grid.count - 1 - i])
+        }
+        var count = 0
+        for item in diagonal1 {
+            if item == symbol {
+                count += 1
+                if count == z {
+                    return true
+                }
+            } else {
+                count = 0
+            }
+        }
+        count = 0
+        for item in diagonal2 {
+            if item == symbol {
+                count += 1
+                if count == z {
+                    return true
+                }
+            } else {
+                count = 0
+            }
+        }
+
+        return false
+    }
+
+
 }
