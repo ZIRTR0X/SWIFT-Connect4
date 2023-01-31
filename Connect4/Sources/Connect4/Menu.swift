@@ -120,7 +120,9 @@ public struct Menu {
         }
     }*/
 
-    private func showWinner(withPlayer player1: Player, andPlayer2 player2: Player){
+
+    /*A modifier pour utiliser les rules*/
+    /*private func showWinner(withPlayer player1: Player, andPlayer2 player2: Player){
         if(_board.isWinner(withSymbole: player1.id)){
             print("Le joueur \(player1.name) a gagné !")
             return
@@ -133,7 +135,7 @@ public struct Menu {
             print("Match nul !")
             return
         }
-    }
+    }*/
 
     private func verifyChoice(withChoice choice: String, andNumber number: Int ) -> Int {
         guard let choice = Int(choice) else {

@@ -28,6 +28,11 @@ public class Game {
         get {_currentPlayer}
     }
 
+    private let _rules: Rules
+    public var rules: Rules {
+        get {_rules}
+    }
+
     private var _ia: IA?
 
     private var _menu: Menu
@@ -39,6 +44,13 @@ public class Game {
         _player2 = nil
         _currentPlayer = _player1!
         _ia = nil
+        _rules = BasicRules()
+    }
+
+    private func isEnd() -> Bool {
+        let isEnd: Bool
+        (isEnd, _, _) = _rules.isEnd(withBoard: _board!, andPlayer1: _player1!, andPlayer2: _player2!)
+        return isEnd
     }
 
     public func play(){
@@ -56,16 +68,17 @@ public class Game {
             return
         }
 
-        while !board.isEnd() {
+
+        while isEnd() {
             if gameType == 1 && currentPlayer == _ia {
-                guard !(_board?.isEnd())! else {
+                guard isEnd() else {
                     print("La partie est terminée")
                     return
                 }
                 _ia!.random()
             } else {
                 guard _menu.displayPlayMenu() == 1 else {return}
-                guard !(_board?.isEnd())! else {
+                guard isEnd() else {
                     print("La partie est terminée")
                     return
                 }
