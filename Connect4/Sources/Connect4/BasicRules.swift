@@ -13,7 +13,7 @@ public struct BasicRules : Rules {
     public var nbPiecesToWin: Int = 4
 
     public func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (isEnd: Bool, winner: Player?, isWin: Bool) {
-        if board.isFull() || !isWinn(withGrid: board.grid, andPlayer1: player1, andPlayer2: player2, andNbPiecesToWin: nbPiecesToWin){
+        if board.isFull() && !isWinn(withGrid: board.grid, andPlayer1: player1, andPlayer2: player2, andNbPiecesToWin: nbPiecesToWin){
             return (true, nil, false)
         }
         if checkWin(withGrid: board.grid, andSymbol: player1.id, andNbPiecesToWin: nbPiecesToWin) {
