@@ -5,6 +5,13 @@ public struct MenuDisplay {
     public init() {
     }
 
+    /// Display the choice of the name of the players
+    /// - Parameters :
+    ///     - GameType : HumanVsHuman or HumanVsIA
+    /// - Returns:
+    ///    - String? : name of the player 1
+    ///   - String? : name of the player 2
+    ///    - nil : for the player 2 if the game is HumanVsIA
     public mutating func initGame(withGameMode gameMode: GameType) -> (String?, String?){
         print("Joueur 1, quel est votre nom ?")
         let name1 = readLine()
@@ -16,6 +23,9 @@ public struct MenuDisplay {
         return (name1, nil)
     }
 
+    /// Display the choice of the game mode
+    /// - Returns:
+    ///        - GameType: HumanVsIA, HumanVsHuman or Quit
     public mutating func displayMenu() -> GameType {
         print("1. Jouer contre l'ordinateur")
         print("2. Jouer contre un autre joueur")
@@ -30,6 +40,11 @@ public struct MenuDisplay {
         else {return GameType.Quit}
     }
 
+    /// Display the choice of the column
+    /// - Parameters:
+    ///     - withBoard: the board
+    /// - Returns:
+    /// -    Int: the column
     public func displayShooseColumn(withBoard board: Board) -> Int{
         print("Quelle colonne voulez-vous jouer ? (1-\(board.nbColumns))")
         let choice = readLine()
@@ -40,6 +55,8 @@ public struct MenuDisplay {
         return verifChoice!-1
     }
 
+    /// Display the end of the game
+    /// - Parameter winner: the name of the winner
     public func displayEndGame(withWinner winner: String?){
         if(winner == nil){
             print("La partie est terminée")
@@ -50,6 +67,12 @@ public struct MenuDisplay {
         }
     }
 
+    /// Verify the choice of the player
+    /// - Parameters:
+    ///   - choice:  the choice of the player (String)
+    ///   - number: le nombre de choix possible
+    /// - Returns:
+    ///  - Int: the choice of the player (Int)
     private func verifyChoice(withChoice choice: String, andNumber number: Int ) -> Int? {
         guard let choice = Int(choice) else {return nil}
         for i in 1...number {
@@ -58,12 +81,15 @@ public struct MenuDisplay {
         return nil
     }
 
+    /// Display the IA play
     public func displayIAPlay(){
         print("L'IA joue...")
         let random = Int.random(in: 1000...3000)
         sleep(UInt32(random/1000))
     }
 
+    /// Display the board
+    /// - Parameter board: the board
     public func displayBoard(withBoard board: Board){
         print(board)
     }
