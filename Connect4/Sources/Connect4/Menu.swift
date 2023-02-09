@@ -59,20 +59,34 @@ public struct Menu {
         print("2. Jouer contre un autre joueur")
         print("3. Quitter")
         let choice = readLine()
-        return verifyChoice(withChoice: choice!, andNumber: 3)
+        var verifChoice = verifyChoice(withChoice: choice!, andNumber: 3)
+        while(verifChoice == 0){
+            verifChoice = displayMenu()
+        }
+        print(verifChoice)
+        return verifChoice!
     }
 
     public func displayPlayMenu() -> Int{
         print("1. Jouer")
         print("2. Quitter")
         let choice = readLine()
-        return verifyChoice(withChoice: choice!, andNumber: 2)
+        var verifChoice = verifyChoice(withChoice: choice!, andNumber: 3)
+        while(verifChoice == 0){
+            verifChoice = displayPlayMenu()
+        }
+        return verifChoice!
+
     }
 
-    public func play() -> Int{
+    public func displayShooseColumn() -> Int{
         print("Quelle colonne voulez-vous jouer ? (1-\(_board.nbColumns))))")
         let choice = readLine()
-        return verifyChoice(withChoice: choice!, andNumber: _board.nbColumns)-1
+        var verifChoice = verifyChoice(withChoice: choice!, andNumber: 3)
+        while(verifChoice == 0){
+            verifChoice = displayShooseColumn()
+        }
+        return verifChoice!-1
 
     }
 
@@ -137,12 +151,16 @@ public struct Menu {
         }
     }*/
 
-    private func verifyChoice(withChoice choice: String, andNumber number: Int ) -> Int {
-        guard let choice = Int(choice) else {
+    private func verifyChoice(withChoice choice: String, andNumber number: Int ) -> Int? {
+        /*guard let choice = Int(choice) else {
             print("Veuillez entrer un nombre valide !")
             let choice = readLine()
             return verifyChoice(withChoice: choice!, andNumber: number)
+        }*/
+        guard let choice = Int(choice) else{return nil}
+        for i in 1...number {
+            if(choice == i){return choice}
         }
-        return choice
+        return nil
     }
 }

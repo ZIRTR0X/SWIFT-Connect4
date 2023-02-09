@@ -12,7 +12,14 @@ public protocol Rules {
     var rowsMax: Int { get }
     var rowsMin: Int { get }
 
+    var baseRows: Int { get }
+    var baseColumns: Int { get }
+
     var nbPiecesToWin: Int { get }
 
     func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (isEnd: Bool, winner: Player?, isWin: Bool)
+
+    func createBoard() -> Board
+    
+    func isValideMove(withBoard board: Board, andColumn column: Int) -> Bool
 }

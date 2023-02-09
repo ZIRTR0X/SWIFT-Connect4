@@ -10,7 +10,32 @@ public struct BasicRules : Rules {
     public var rowsMax: Int = 6
     public var rowsMin: Int = 1
 
+    public var baseRows: Int = 6
+    public var baseColumns: Int = 7
+
     public var nbPiecesToWin: Int = 4
+
+
+    public func createBoard() -> Board {
+        Board(nbRows: rowsMax, nbColumns: columnsMax)!
+    }
+
+    public func isValideMove(withBoard board: Board, andColumn column: Int) -> Bool {
+        print("Is valide move")
+        if column < 0 || column > baseRows - 1 {
+            print("Entrer une colonne entre \(columnsMin) et \(columnsMax)")
+            return false
+        }
+        if board.grid[0][column] != nil {
+            print("La colonne est pleine")
+            return false
+        }
+        if board.isFull() {
+            print("Le plateau est plein")
+            return false
+        }
+        return true
+    }
 
     public func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (isEnd: Bool, winner: Player?, isWin: Bool) {
         if board.isFull() && !isWinn(withGrid: board.grid, andPlayer1: player1, andPlayer2: player2, andNbPiecesToWin: nbPiecesToWin){

@@ -12,6 +12,8 @@ public class Player : Equatable {
         lhs.id == rhs.id
     }
 
+    private var _menu: Menu
+
     private var _name: String
     public var name: String {
         get {_name}
@@ -22,26 +24,25 @@ public class Player : Equatable {
     public var id: Int {
         get{_id}
     }
-
-
-    private var _board: Board
-    public var board: Board {
-        get {_board}
-    }
     
     
-    public init?(withName name: String, andId id: Int, andBoard board: Board) {
+    public init?(withName name: String, andId id: Int, andMenu menu: Menu) {
         guard id == 1 || id == 2 else {
             print("Error : The id must be 1 or 2")
             return nil
         }
         _name = name
         _id = id
-        _board = board
+        _menu = menu
     }
 
-    
-    public func playInColumn(withColumn column: Int) -> Bool {
-        board.insertPiece(id: _id, columns: column)
+    public func playInColumn(withBoard board: Board, andRules rules : Rules) -> Board {
+        var newBoard = board
+        var column =  _menu.displayShooseColumn();
+        while(rules.isValideMove(withBoard: newBoard, andColumn: column) == false){
+            column = _menu.displayShooseColumn()
+        }
+        newBoard.insertPiece(id: _id, columns: column)
+        return newBoard
     }
 }

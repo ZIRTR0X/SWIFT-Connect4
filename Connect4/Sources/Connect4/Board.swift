@@ -1,7 +1,7 @@
 import Foundation
 
 /// The board of the game
-public class Board : CustomStringConvertible
+public struct Board : CustomStringConvertible
 {
     public let nbRows: Int
     public let nbColumns: Int
@@ -70,7 +70,7 @@ public class Board : CustomStringConvertible
     ///   - id: The id of the piece (1:X or 2:O)
     ///   - columns: The column where the piece will be inserted
     /// - Returns: True if the piece is inserted, false otherwise
-    public func insertPiece(id: Int, columns: Int) -> Bool {
+    public mutating func insertPiece(id: Int, columns: Int) -> Bool {
         var rows = 0
         
         do {
@@ -100,7 +100,7 @@ public class Board : CustomStringConvertible
     ///   - columns: The column where the piece will be inserted
     ///   - rows: THe row where the piece will be inserted
     /// - Returns: True if the piece is inserted, false otherwise
-    private func insertPiece(id: Int, columns: Int, rows: Int) -> Bool {
+    private mutating func insertPiece(id: Int, columns: Int, rows: Int) -> Bool {
         do {
             try checkInsertPiece(id: id, gravity: false, columns: columns, rows: rows)
         } catch let error as OutOfRangeError where error.message != "Error : " {
@@ -120,7 +120,7 @@ public class Board : CustomStringConvertible
     ///   - column: The column where the piece will be inserted
     ///   - row: The row where the piece will be inserted
     /// - Returns: True if the piece can be inserted, false otherwise
-    public func removePiece(row: Int, column: Int) -> Bool {
+    public mutating func removePiece(row: Int, column: Int) -> Bool {
         do {
             try checkRemovePiece(row: row, column: column)
         } catch let error as OutOfRangeError where error.message != "Error : " {
@@ -140,7 +140,7 @@ public class Board : CustomStringConvertible
     /// - Parameters:
     ///   - column: The column where the piece will be inserted
     ///   - row: The row where the piece will be inserted
-    private func movesPartsAfterDelete(row: Int, column: Int) {
+    private mutating func movesPartsAfterDelete(row: Int, column: Int) {
         for i in (0...row).reversed() {
             if i - 1 >= 0 && grid[i - 1][column] != nil {
                 grid[i][column] = grid[i - 1][column]
@@ -155,7 +155,7 @@ public class Board : CustomStringConvertible
     ///   - column: The column where the piece will be inserted
     ///   - row: The row where the piece will be inserted
     /// - Returns: True if the piece can be inserted, false otherwise
-    private func removePieceWithoutGravity(column: Int, row: Int) -> Bool {
+    private mutating func removePieceWithoutGravity(column: Int, row: Int) -> Bool {
         do {
             try checkRemovePiece(row: row, column: column)
         } catch let error as OutOfRangeError where error.message != "Error : " {
@@ -204,7 +204,8 @@ public class Board : CustomStringConvertible
     /// Check if the piece can be removed in the board
     /// - Parameters:
     ///   - column: The column where the piece will be removed
-    ///   - row: The row where the piece will be removed
+    ///   - row: The row where the piece wi
+    // ll be removed
     /// - Throws: OutOfRangeError if the piece can't be removed
     private func checkRemovePiece(row: Int, column: Int) throws {
         if column < 0 || column > nbColumns - 1{
