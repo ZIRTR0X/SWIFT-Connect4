@@ -21,16 +21,16 @@ public struct BasicRules : Rules {
     }
 
     public func isValideMove(withBoard board: Board, andColumn column: Int) -> Bool {
+        if board.isFull() {
+            print("Le plateau est plein")
+            return false
+        }
         if column < 0 || column >= baseColumns {
             print("Entrer une colonne entre \(columnsMin) et \(columnsMax)")
             return false
         }
         if board.grid[0][column] != nil {
             print("La colonne est pleine")
-            return false
-        }
-        if board.isFull() {
-            print("Le plateau est plein")
             return false
         }
         return true

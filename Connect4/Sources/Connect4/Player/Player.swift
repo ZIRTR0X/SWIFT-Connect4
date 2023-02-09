@@ -9,10 +9,10 @@ import Foundation
 
 public class Player : Equatable {
     public static func ==(lhs: Player, rhs: Player) -> Bool {
-        lhs.id == rhs.id
+        lhs.id == rhs.id && lhs.name == rhs.name
     }
 
-    private var _menu: Menu
+    private var _menu: MenuDisplay
 
     private var _name: String
     public var name: String {
@@ -26,7 +26,7 @@ public class Player : Equatable {
     }
     
     
-    public init?(withName name: String, andId id: Int, andMenu menu: Menu) {
+    public init?(withName name: String, andId id: Int, andMenu menu: MenuDisplay) {
         guard id == 1 || id == 2 else {
             print("Error : The id must be 1 or 2")
             return nil
@@ -37,10 +37,11 @@ public class Player : Equatable {
     }
 
     public func playInColumn(withBoard board: Board, andRules rules : Rules) -> Board {
+        if(board.isFull()) {return board}
         var newBoard = board
-        var column =  _menu.displayShooseColumn();
+        var column =  _menu.displayShooseColumn(withBoard: newBoard)
         while(rules.isValideMove(withBoard: newBoard, andColumn: column) == false){
-            column = _menu.displayShooseColumn()
+            column = _menu.displayShooseColumn(withBoard: newBoard)
         }
         newBoard.insertPiece(id: _id, columns: column)
         return newBoard

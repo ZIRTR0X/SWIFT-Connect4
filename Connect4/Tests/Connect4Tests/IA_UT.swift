@@ -8,15 +8,17 @@ final class IA_UT: XCTestCase {
 
         func expect(withGrid grid: [[Int?]],  shouldBeNotNil notNil: Bool) {
             let board = Board(grid: grid)
-            let ia = IA(withName: name, andId: 1, andBoard: board!)
-            let result = ia?.random()
+            let menu = MenuDisplay()
+            let rules = BasicRules()
+            let ia = IA(withName: name, andId: 1, andMenu: menu)
+            let result = ia?.random(withBoard: board!, andRules: rules)
 
             if !notNil {
-                XCTAssertFalse(result!)
+                XCTAssertEqual(grid, result?.grid)
                 return
             }
-            XCTAssertTrue(result!)
-            XCTAssertNotNil(ia?.board)
+            XCTAssertNotEqual(board!, result!)
+            XCTAssertNotNil(result)
         }
 
         let grid = [

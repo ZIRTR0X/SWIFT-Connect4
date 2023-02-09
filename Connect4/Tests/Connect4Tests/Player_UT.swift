@@ -8,7 +8,8 @@ final class Player_UT: XCTestCase {
 
         func expect(withName name: String, andId id: Int, shouldBeNotNil notNil: Bool) {
             let board = Board(nbRows : 6, nbColumns: 7)
-            let player = Player(withName: name, andId: id, andBoard: board!)
+            let menu = MenuDisplay()
+            let player = Player(withName: name, andId: id, andMenu: menu)
 
             if !notNil {
                 XCTAssertNil(player)
@@ -25,59 +26,45 @@ final class Player_UT: XCTestCase {
         expect(withName: "Player", andId: 0, shouldBeNotNil: false)
     }
 
-    func testPlayInColumn() throws {
+    /*func testPlayInColumn() throws {
 
-        func expect(withColumn column: Int, shouldBeNotNil notNil: Bool) {
-            let grid = [
-                [nil, nil, nil, nil, 2],
-                [nil, nil, nil, 2, 2],
-                [nil, nil, 2, 2, 2],
-                [nil, 2, 2, 2, 2]]
+        func expect(withGrid grid: [[Int?]], shouldBeNotNil notNil: Bool) {
             let board = Board(grid: grid)
-            let player = Player(withName: "Player", andId: 1, andBoard: board!)
-            let result = player?.playInColumn(withColumn: column)
+            let menu = MenuDisplay()
+            let rules = BasicRules()
+            let player = Player(withName: "Player", andId: 1, andMenu: menu)
+            let result = player?.playInColumn(withBoard: board!, andRules: rules)
 
             if !notNil {
-                XCTAssertFalse(result!)
+                XCTAssertEqual(grid, result?.grid)
                 return
             }
-            XCTAssertTrue(result!)
-            XCTAssertNotNil(result)
-            switch column {
-            case 0:
-                XCTAssertEqual(1, board?.grid[3][0])
-            case 1:
-                XCTAssertEqual(1, board?.grid[2][1])
-            case 2:
-                XCTAssertEqual(1, board?.grid[1][2])
-            default:
-                XCTAssertEqual(1, board?.grid[0][3])
-            }
-
+            XCTAssertNotEqual(grid, result?.grid)
         }
 
-        expect(withColumn: 0, shouldBeNotNil: true)
-        expect(withColumn: 1, shouldBeNotNil: true)
-        expect(withColumn: 2, shouldBeNotNil: true)
-        expect(withColumn: 3, shouldBeNotNil: true)
-        expect(withColumn: 4, shouldBeNotNil: false)
-        expect(withColumn: 5, shouldBeNotNil: false)
-        expect(withColumn: -1, shouldBeNotNil: false)
-    }
+        let grid = [
+            [nil, nil, nil, nil, 2],
+            [nil, nil, nil, 2, 2],
+            [nil, nil, 2, 2, 2],
+            [nil, 2, 2, 2, 2]]
+        expect(withGrid: grid, shouldBeNotNil: true)
+    }*/
 
     func testComparePlayer() throws {
-        let board = Board(nbRows : 6, nbColumns: 7)
-        let player1 = Player(withName: "Player1", andId: 1, andBoard: board!)
-        let player2 = Player(withName: "Player2", andId: 2, andBoard: board!)
-        let player3 = Player(withName: "Player3", andId: 1, andBoard: board!)
+        let menu = MenuDisplay()
+        let player1 = Player(withName: "Player", andId: 1, andMenu: menu)
+        let player2 = Player(withName: "Player2", andId: 1, andMenu: menu)
+        let player3 = Player(withName: "Player3", andId: 1, andMenu: menu)
+        let player4 = player1
 
-        XCTAssertNotEqual(player1, player2)
-        XCTAssertEqual(player1, player3)
+        XCTAssertEqual(player1!, player4!)
+        XCTAssertNotEqual(player1!, player3!)
+        XCTAssertNotEqual(player2!, player3!)
     }
 
     func testSetName() throws {
-        let board = Board(nbRows : 6, nbColumns: 7)
-        let player = Player(withName: "Player", andId: 1, andBoard: board!)
+        let menu = MenuDisplay()
+        let player = Player(withName: "Player", andId: 1, andMenu: menu)
         player?.name = "Player1"
         XCTAssertEqual("Player1", player?.name)
     }

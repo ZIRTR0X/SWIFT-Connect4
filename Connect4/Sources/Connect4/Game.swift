@@ -36,12 +36,12 @@ public class Game {
 
     private var _ia: IA?
 
-    private var _menu: Menu
+    private var _menu: MenuDisplay
 
     public init() {
         _rules = BasicRules()
         _board = _rules.createBoard()
-        _menu = Menu(withBoard: _board)
+        _menu = MenuDisplay()
         _player1 = Human(withName: "Player1", andId: 1, andMenu: _menu)!
         _player2 = nil
         _currentPlayer = _player1

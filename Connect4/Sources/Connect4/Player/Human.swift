@@ -8,7 +8,7 @@
 import Foundation
 
 public class Human: Player {
-    public override init?(withName name: String, andId id: Int, andMenu menu: Menu) {
+    public override init?(withName name: String, andId id: Int, andMenu menu: MenuDisplay) {
         super.init(withName: name, andId: id, andMenu: menu)
     }
 }

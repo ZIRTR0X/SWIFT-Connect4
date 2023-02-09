@@ -1,7 +1,7 @@
 import Foundation
 
 /// The board of the game
-public struct Board : CustomStringConvertible
+public struct Board : CustomStringConvertible, Equatable
 {
     public let nbRows: Int
     public let nbColumns: Int
@@ -187,18 +187,10 @@ public struct Board : CustomStringConvertible
         if id != 1 && id != 2 {
             throw OutOfRangeError("The id is out of range [1,2].")
         }
-        if isFull() {
-            throw OutOfRangeError("The grid is full.")
+        if gravity && grid[rows!][columns] != nil {
+            throw OutOfRangeError("The place is already taken.")
         }
-        if gravity {
-//            if grid[0][columns] != nil {
-//                throw OutOfRangeError("The column is full.")
-//            }
-        } else {
-            if grid[rows!][columns] != nil {
-                throw OutOfRangeError("The place is already taken.")
-            }
-        }
+
     }
 
     /// Check if the piece can be removed in the board

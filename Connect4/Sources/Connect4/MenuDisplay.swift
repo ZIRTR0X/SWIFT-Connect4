@@ -1,11 +1,8 @@
 import Foundation
 
-public struct Menu {
+public struct MenuDisplay {
 
-    private var _board: Board
-
-    public init(withBoard board: Board){
-        _board = board
+    public init() {
     }
 
     public mutating func initGame(withGameMode gameMode: GameType) -> (String?, String?){
@@ -33,13 +30,13 @@ public struct Menu {
         else {return GameType.Quit}
     }
 
-    public func displayShooseColumn() -> Int{
-        print("Quelle colonne voulez-vous jouer ? (1-\(_board.nbColumns))))")
+    public func displayShooseColumn(withBoard board: Board) -> Int{
+        print("Quelle colonne voulez-vous jouer ? (1-\(board.nbColumns))))")
         let choice = readLine()
-        var verifChoice = verifyChoice(withChoice: choice!, andNumber: _board.nbColumns)
+        var verifChoice = verifyChoice(withChoice: choice!, andNumber: board.nbColumns)
         print(verifChoice)
         while(verifChoice == nil){
-            verifChoice = displayShooseColumn()
+            verifChoice = displayShooseColumn(withBoard: board)
         }
         return verifChoice!-1
     }
