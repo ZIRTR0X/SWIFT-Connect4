@@ -17,7 +17,7 @@ public protocol Rules {
 
     var nbPiecesToWin: Int { get }
 
-    func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (isEnd: Bool, winner: Player?, isWin: Bool)
+    func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (end: EndType, winner: Player?)
 
     func createBoard() -> Board
     

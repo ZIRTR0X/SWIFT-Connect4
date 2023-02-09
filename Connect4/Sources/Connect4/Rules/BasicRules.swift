@@ -21,8 +21,7 @@ public struct BasicRules : Rules {
     }
 
     public func isValideMove(withBoard board: Board, andColumn column: Int) -> Bool {
-        print("Is valide move")
-        if column < 0 || column > baseRows - 1 {
+        if column < 0 || column >= baseColumns {
             print("Entrer une colonne entre \(columnsMin) et \(columnsMax)")
             return false
         }
@@ -37,17 +36,17 @@ public struct BasicRules : Rules {
         return true
     }
 
-    public func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (isEnd: Bool, winner: Player?, isWin: Bool) {
+    public func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (end: EndType, winner: Player?) {
         if board.isFull() && !isWinn(withGrid: board.grid, andPlayer1: player1, andPlayer2: player2, andNbPiecesToWin: nbPiecesToWin){
-            return (true, nil, false)
+            return (EndType.EndWithoutWin, nil)
         }
         if checkWin(withGrid: board.grid, andSymbol: player1.id, andNbPiecesToWin: nbPiecesToWin) {
-             return (true, player1, true)
+             return (EndType.EndWithWin, player1)
         }
         if checkWin(withGrid: board.grid, andSymbol: player2.id, andNbPiecesToWin: nbPiecesToWin) {
-            return (true, player2, true)
+            return (EndType.EndWithWin, player2)
         }
-        return (false, nil, false)
+        return (EndType.NotEnd, nil)
     }
 
     private func isWinn(withGrid grid: [[Int?]], andPlayer1 player1: Player, andPlayer2 player2: Player, andNbPiecesToWin nbPiecesToWin: Int) -> Bool {
