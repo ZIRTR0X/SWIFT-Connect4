@@ -31,10 +31,9 @@ public struct MenuDisplay {
     }
 
     public func displayShooseColumn(withBoard board: Board) -> Int{
-        print("Quelle colonne voulez-vous jouer ? (1-\(board.nbColumns))))")
+        print("Quelle colonne voulez-vous jouer ? (1-\(board.nbColumns))")
         let choice = readLine()
         var verifChoice = verifyChoice(withChoice: choice!, andNumber: board.nbColumns)
-        print(verifChoice)
         while(verifChoice == nil){
             verifChoice = displayShooseColumn(withBoard: board)
         }
@@ -57,5 +56,15 @@ public struct MenuDisplay {
             if(choice == i){return choice}
         }
         return nil
+    }
+
+    public func displayIAPlay(){
+        print("L'IA joue...")
+        let random = Int.random(in: 1000...3000)
+        sleep(UInt32(random/1000))
+    }
+
+    public func displayBoard(withBoard board: Board){
+        print(board)
     }
 }
