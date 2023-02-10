@@ -39,9 +39,9 @@ public class Player : Equatable {
     public func playInColumn(withBoard board: Board, andRules rules : Rules) -> Board {
         if(board.isFull()) {return board}
         var newBoard = board
-        var column =  _menu.displayShooseColumn(withBoard: newBoard)
+        var column =  _menu.displayShooseColumn(withBoard: newBoard)-1
         while(rules.isValideMove(withBoard: newBoard, andColumn: column) == false){
-            column = _menu.displayShooseColumn(withBoard: newBoard)
+            column = _menu.displayShooseColumn(withBoard: newBoard)-1
         }
         newBoard.insertPiece(id: _id, columns: column)
         return newBoard

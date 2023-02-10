@@ -50,7 +50,7 @@ public struct MenuDisplay : Menu{
         while(verifChoice == nil){
             verifChoice = displayShooseColumn(withBoard: board)
         }
-        return verifChoice!-1
+        return verifChoice!
     }
 
     /// Display the end of the game
