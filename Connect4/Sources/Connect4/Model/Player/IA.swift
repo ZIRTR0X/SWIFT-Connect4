@@ -8,6 +8,13 @@
 import Foundation
 
 public class IA: Player {
+
+    /// Play a random move
+    /// - Parameters:
+    ///   - board: the board
+    ///   - rules: the rules
+    /// - Returns:
+    ///  - Board: the new board with the move
     public func random(withBoard board: Board, andRules rules : Rules) -> Board {
         if(board.isFull()) {return board}
         var newBoard = board

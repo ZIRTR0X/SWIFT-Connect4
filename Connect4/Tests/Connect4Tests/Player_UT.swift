@@ -26,11 +26,11 @@ final class Player_UT: XCTestCase {
         expect(withName: "Player", andId: 0, shouldBeNotNil: false)
     }
 
-    /*func testPlayInColumn() throws {
+    func testPlayInColumn() throws {
 
         func expect(withGrid grid: [[Int?]], shouldBeNotNil notNil: Bool) {
             let board = Board(grid: grid)
-            let menu = MenuDisplay()
+            let menu = MenuDisplayMock()
             let rules = BasicRules()
             let player = Player(withName: "Player", andId: 1, andMenu: menu)
             let result = player?.playInColumn(withBoard: board!, andRules: rules)
@@ -43,12 +43,16 @@ final class Player_UT: XCTestCase {
         }
 
         let grid = [
-            [nil, nil, nil, nil, 2],
-            [nil, nil, nil, 2, 2],
-            [nil, nil, 2, 2, 2],
-            [nil, 2, 2, 2, 2]]
-        expect(withGrid: grid, shouldBeNotNil: true)
-    }*/
+            [nil, nil, nil, nil, 2, 1, 1],
+            [nil, nil, nil, 2, 2, 1, 1],
+            [nil, nil, 2, 2, 2, 1, 1],
+            [nil, 2, 2, 2, 2, 1, 1],
+            [2, 2, 2, 2, 2, 1, 1],
+            [2, 2, 2, 2, 2, 1, 1]]
+        for _ in 0..<20 {
+            expect(withGrid: grid, shouldBeNotNil: true)
+        }
+    }
 
     func testComparePlayer() throws {
         let menu: Menu = MenuDisplayMock()

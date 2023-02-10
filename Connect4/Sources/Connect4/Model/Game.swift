@@ -18,10 +18,10 @@ public class Game {
     }
 
     private var _player2: Player?
-    public var player2: Player {
+    public var player2: Player? {
         get {
             if(_ia != nil){return _ia!}
-            else {return _player2!}
+            else {return _player2}
         }
     }
 
@@ -57,25 +57,25 @@ public class Game {
             let resultBoard: Board
             if gameType == GameType.HumanVsIA && currentPlayer is IA {
                 _menu.displayIAPlay()
-                resultBoard = _ia!.random(withBoard: _board, andRules: _rules)
+                resultBoard = _ia!.random(withBoard: board, andRules: rules)
             } else {
-                resultBoard = _currentPlayer.playInColumn(withBoard: _board, andRules: _rules)
+                resultBoard = currentPlayer.playInColumn(withBoard: board, andRules: rules)
             }
             _board = resultBoard
             _menu.displayBoard(withBoard: board)
             guard !isEnd() else {
                 var winner: Player?
-                (_, winner) = _rules.isEnd(withBoard: _board, andPlayer1: player1, andPlayer2: player2)
+                (_, winner) = rules.isEnd(withBoard: board, andPlayer1: player1, andPlayer2: player2!)
                 _menu.displayEndGame(withWinner: winner?.name ?? nil)
                 return
             }
-            _currentPlayer = (_currentPlayer == _player1) ? (_player2 ?? _ia) as! Player : _player1
+            _currentPlayer = (currentPlayer == player1) ? (player2!) : player1
         }
     }
 
     private func isEnd() -> Bool {
         let isEnd: EndType
-        (isEnd, _) = _rules.isEnd(withBoard: _board, andPlayer1: _player1, andPlayer2: player2)
+        (isEnd, _) = rules.isEnd(withBoard: board, andPlayer1: player1, andPlayer2: player2!)
         return isEnd != EndType.NotEnd
     }
 
