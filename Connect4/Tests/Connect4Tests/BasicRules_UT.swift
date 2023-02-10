@@ -18,7 +18,7 @@ final class BasicRules_UT: XCTestCase {
             XCTAssertEqual(winner, winnerResult)
         }
         let board = Board(nbRows: 6, nbColumns: 7)
-        let menu = MenuDisplay()
+        let menu: Menu = MenuDisplayMock()
         let player1 = Human(withName: "Player 1", andId: 1, andMenu: menu)
         let player2 = Human(withName: "Player 2", andId: 2, andMenu: menu)
         //bard vide sans gagnant

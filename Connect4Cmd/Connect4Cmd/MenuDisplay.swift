@@ -1,9 +1,7 @@
 import Foundation
+import Connect4
 
-public struct MenuDisplay {
-
-    public init() {
-    }
+public struct MenuDisplay : Menu{
 
     /// Display the choice of the name of the players
     /// - Parameters :
@@ -12,7 +10,7 @@ public struct MenuDisplay {
     ///    - String? : name of the player 1
     ///   - String? : name of the player 2
     ///    - nil : for the player 2 if the game is HumanVsIA
-    public mutating func initGame(withGameMode gameMode: GameType) -> (String?, String?){
+    public func initGame(withGameMode gameMode: GameType) -> (String?, String?){
         print("Joueur 1, quel est votre nom ?")
         let name1 = readLine()
         if gameMode == GameType.HumanVsHuman {
@@ -26,7 +24,7 @@ public struct MenuDisplay {
     /// Display the choice of the game mode
     /// - Returns:
     ///        - GameType: HumanVsIA, HumanVsHuman or Quit
-    public mutating func displayMenu() -> GameType {
+    public func displayMenu() -> GameType {
         print("1. Jouer contre l'ordinateur")
         print("2. Jouer contre un autre joueur")
         print("3. Quitter")

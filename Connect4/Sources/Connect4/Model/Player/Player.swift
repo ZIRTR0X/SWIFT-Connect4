@@ -12,7 +12,7 @@ public class Player : Equatable {
         lhs.id == rhs.id && lhs.name == rhs.name
     }
 
-    private var _menu: MenuDisplay
+    private var _menu: Menu
 
     private var _name: String
     public var name: String {
@@ -26,7 +26,7 @@ public class Player : Equatable {
     }
     
     
-    public init?(withName name: String, andId id: Int, andMenu menu: MenuDisplay) {
+    public init?(withName name: String, andId id: Int, andMenu menu: Menu) {
         guard id == 1 || id == 2 else {
             print("Error : The id must be 1 or 2")
             return nil

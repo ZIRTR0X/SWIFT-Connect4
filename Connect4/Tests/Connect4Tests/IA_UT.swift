@@ -8,7 +8,7 @@ final class IA_UT: XCTestCase {
 
         func expect(withGrid grid: [[Int?]],  shouldBeNotNil notNil: Bool) {
             let board = Board(grid: grid)
-            let menu = MenuDisplay()
+            let menu: Menu = MenuDisplayMock() 
             let rules = BasicRules()
             let ia = IA(withName: name, andId: 1, andMenu: menu)
             let result = ia?.random(withBoard: board!, andRules: rules)

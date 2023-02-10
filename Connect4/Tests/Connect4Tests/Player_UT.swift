@@ -8,7 +8,7 @@ final class Player_UT: XCTestCase {
 
         func expect(withName name: String, andId id: Int, shouldBeNotNil notNil: Bool) {
             let board = Board(nbRows : 6, nbColumns: 7)
-            let menu = MenuDisplay()
+            let menu: Menu = MenuDisplayMock()
             let player = Player(withName: name, andId: id, andMenu: menu)
 
             if !notNil {
@@ -51,7 +51,7 @@ final class Player_UT: XCTestCase {
     }*/
 
     func testComparePlayer() throws {
-        let menu = MenuDisplay()
+        let menu: Menu = MenuDisplayMock()
         let player1 = Player(withName: "Player", andId: 1, andMenu: menu)
         let player2 = Player(withName: "Player2", andId: 1, andMenu: menu)
         let player3 = Player(withName: "Player3", andId: 1, andMenu: menu)
@@ -63,7 +63,7 @@ final class Player_UT: XCTestCase {
     }
 
     func testSetName() throws {
-        let menu = MenuDisplay()
+        let menu: Menu = MenuDisplayMock()
         let player = Player(withName: "Player", andId: 1, andMenu: menu)
         player?.name = "Player1"
         XCTAssertEqual("Player1", player?.name)
