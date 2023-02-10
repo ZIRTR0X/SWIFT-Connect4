@@ -25,7 +25,7 @@ public protocol Rules {
         *   - player2: the second player
         * - Returns: the end type and the winner
      */
-    func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (end: EndType, winner: Player?)
+    func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player?) -> (end: EndType, winner: Player?)
 
     /**
      * Create a board with the rules

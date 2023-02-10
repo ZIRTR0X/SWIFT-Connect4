@@ -36,28 +36,30 @@ public struct BasicRules : Rules {
         return true
     }
 
-    public func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player) -> (end: EndType, winner: Player?) {
+    public func isEnd(withBoard board: Board, andPlayer1 player1: Player, andPlayer2 player2: Player?) -> (end: EndType, winner: Player?) {
         if board.isFull() && !isWinn(withGrid: board.grid, andPlayer1: player1, andPlayer2: player2, andNbPiecesToWin: nbPiecesToWin){
             return (EndType.EndWithoutWin, nil)
         }
         if checkWin(withGrid: board.grid, andSymbol: player1.id, andNbPiecesToWin: nbPiecesToWin) {
              return (EndType.EndWithWin, player1)
         }
-        if checkWin(withGrid: board.grid, andSymbol: player2.id, andNbPiecesToWin: nbPiecesToWin) {
+        if checkWin(withGrid: board.grid, andSymbol: player2?.id ?? 2, andNbPiecesToWin: nbPiecesToWin) {
             return (EndType.EndWithWin, player2)
         }
         return (EndType.NotEnd, nil)
     }
 
-    private func isWinn(withGrid grid: [[Int?]], andPlayer1 player1: Player, andPlayer2 player2: Player, andNbPiecesToWin nbPiecesToWin: Int) -> Bool {
-        if checkWin(withGrid: grid, andSymbol: player1.id, andNbPiecesToWin: nbPiecesToWin) || checkWin(withGrid: grid, andSymbol: player2.id, andNbPiecesToWin: nbPiecesToWin) {
+    private func isWinn(withGrid grid: [[Int?]], andPlayer1 player1: Player, andPlayer2 player2: Player?, andNbPiecesToWin nbPiecesToWin: Int) -> Bool {
+        if checkWin(withGrid: grid, andSymbol: player1.id, andNbPiecesToWin: nbPiecesToWin) || checkWin(withGrid: grid, andSymbol: player2?.id, andNbPiecesToWin: nbPiecesToWin) {
             return true
         }
         return false
     }
 
-    private func checkWin(withGrid grid: [[Int?]], andSymbol symbol: Int, andNbPiecesToWin nbPiecesToWin: Int) -> Bool {
-        // Vérifie les lignes
+    private func checkWin(withGrid grid: [[Int?]], andSymbol symbol: Int?, andNbPiecesToWin nbPiecesToWin: Int) -> Bool {
+        if symbol == nil {return false}
+
+        // Verify the rows
         for row in grid {
             var count = 0
             for item in row {
@@ -72,7 +74,7 @@ public struct BasicRules : Rules {
             }
         }
 
-        // Vérifie les colonnes
+        // Verify the columns
         for col in 0..<grid[0].count {
             var count = 0
             var column = [Int?]()
@@ -91,7 +93,7 @@ public struct BasicRules : Rules {
             }
         }
 
-        // Vérifie les diagonales
+        // Verify the diagonals
         var diagonal1 = [Int?]()
         var diagonal2 = [Int?]()
         for i in 0..<grid.count {

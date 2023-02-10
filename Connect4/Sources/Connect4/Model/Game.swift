@@ -75,7 +75,8 @@ public class Game {
 
     private func isEnd() -> Bool {
         let isEnd: EndType
-        (isEnd, _) = rules.isEnd(withBoard: board, andPlayer1: player1, andPlayer2: player2!)
+        let winner: Player?
+        (isEnd, winner) = rules.isEnd(withBoard: board, andPlayer1: player1, andPlayer2: player2 ?? nil)
         return isEnd != EndType.NotEnd
     }
 
