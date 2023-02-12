@@ -84,6 +84,8 @@ The tests will be executed.
     -> [x] Basic rules  
     -> [ ] Custom rules (the structure is ready for that, just have to implement it)
 
+For more information, see the wiki
+
 # Authors
 <a href='https://github.com/ZIRTR0X'>Julien THÊME</a>
 
